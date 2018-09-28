@@ -6,9 +6,9 @@ import (
 	"io"
 	"io/ioutil"
 	"log"
-	"strconv"
 
 	client "github.com/akamai/AkamaiOPEN-edgegrid-golang/client-v1"
+	common "github.com/apiheat/akamai-cli-common"
 	"github.com/urfave/cli"
 )
 
@@ -28,7 +28,7 @@ func reportRespParse(in string) (data reportResponse, err error) {
 }
 
 func reportProperty(c *cli.Context) error {
-	urlStr := fmt.Sprintf("%s/%s", URL, setID(c))
+	urlStr := fmt.Sprintf("%s/%s", URL, common.SetIntID(c, "Please provide ID for property"))
 
 	if debug {
 		println(urlStr)
@@ -41,15 +41,15 @@ func reportProperty(c *cli.Context) error {
 	}
 
 	result, err := reportRespParse(data)
-	errorCheck(err)
+	common.ErrorCheck(err)
 
-	printJSON(result)
+	common.OutputJSON(result)
 
 	return nil
 }
 
 func resetProperty(c *cli.Context) error {
-	urlStr := fmt.Sprintf("%s/%s/reset", URL, setID(c))
+	urlStr := fmt.Sprintf("%s/%s/reset", URL, common.SetIntID(c, "Please provide ID for property"))
 
 	if debug {
 		println(urlStr)
@@ -70,44 +70,15 @@ func resetProperty(c *cli.Context) error {
 	return nil
 }
 
-func errorCheck(e error) {
-	if e != nil {
-		log.Fatal(e)
-	}
-}
-
-func printJSON(str interface{}) {
-	jsonRes, _ := json.MarshalIndent(str, "", "  ")
-	fmt.Printf("%+v\n", string(jsonRes))
-}
-
 func fetchData(urlPath, method string, body io.Reader) (string, int) {
 	req, err := client.NewRequest(edgeConfig, method, urlPath, body)
-	errorCheck(err)
+	common.ErrorCheck(err)
 
 	resp, err := client.Do(edgeConfig, req)
-	errorCheck(err)
+	common.ErrorCheck(err)
 
 	defer resp.Body.Close()
 	byt, _ := ioutil.ReadAll(resp.Body)
 
 	return string(byt), resp.StatusCode
-}
-
-func setID(c *cli.Context) string {
-	var id string
-	if c.NArg() == 0 {
-		log.Fatal("Please provide ID for property")
-	}
-
-	id = c.Args().Get(0)
-	verifyID(id)
-	return id
-}
-
-func verifyID(id string) {
-	if _, err := strconv.Atoi(id); err != nil {
-		errStr := fmt.Sprintf("Property ID should be number, you provided: %q\n", id)
-		log.Fatal(errStr)
-	}
 }
