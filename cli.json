@@ -4,10 +4,10 @@
   },
   "commands": [
     {
-      "name": "users",
+      "name": "a2",
       "version": "0.0.1",
       "description": "Adaptive Acceleration",
-      "bin": "https://github.com/partamonov/akamai-cli-a2/releases/download/v{{.Version}}/akamai-{{.Name}}_{{.OS}}_{{.Arch}}{{.BinSuffix}}"
+      "bin": "https://github.com/apiheat/akamai-cli-a2/releases/download/v{{.Version}}/akamai-{{.Name}}_{{.OS}}_{{.Arch}}{{.BinSuffix}}"
     }
   ]
 }
