@@ -5,7 +5,7 @@
   "commands": [
     {
       "name": "a2",
-      "version": "3.0.1",
+      "version": "3.0.2",
       "description": "Adaptive Acceleration",
       "bin": "https://github.com/apiheat/akamai-cli-a2/releases/download/v{{.Version}}/akamai-cli-{{.Name}}_{{.OS}}_{{.Arch}}{{.BinSuffix}}"
     }
