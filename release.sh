@@ -57,7 +57,8 @@ else
     echo "git commit -m 'Updated version in cli.json'"
     git commit -m 'Updated version in cli.json'
   fi
-
+    echo "dep ensure -update"
+    dep ensure -update
     echo "git add -A && git commit -a -m '$comment'"
     git add -A && git commit -a -m "$comment"
     echo "git tag -a v$version -m '$comment'"
